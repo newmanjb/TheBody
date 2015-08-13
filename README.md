@@ -1,0 +1,2 @@
+# TheBody
+An object-oriented (java) model of the workings of the human body.  This currently consists of a heart and lungs implementation together with circulatory system components (blood vessels, red blood cells).  These components can be built up in any order so as to transport blood to be oxygenated by the lungs.  The API that this provides has been designed to facilitate firther addition of other organs that depend on this blood supply, therefore allowing further work and a complete picture of the human body to be built up.
