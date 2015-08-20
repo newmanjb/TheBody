@@ -65,7 +65,7 @@ public class Heart implements Named
 		{
 			throw new IllegalArgumentException("Heart is already started");			
 		}
-				
+
 		lifeThread.start();
 		COMMUNICATOR.postEvent(this, "Heart started", "Heart.Started");
 	}
