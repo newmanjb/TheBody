@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="com.noomtech.thebody.buildingblocks">
+
+    <class name="Pipe" table="PIPES">
+        <id name="id" column="CONTAINER_ID">
+            <generator class="native"/>
+        </id>
+        
+        <discriminator column="PIPE_TYPE" type="string"/>
+                    
+        <property name="name" type="string" column="name"/>
+        <property name="viscosity" type="float" column="viscosity"/>
+        
+    	<set name="particles" table="CONTAINER_PARTICLES" cascade="all" lazy="false">
+        	<key column="CONTAINER_ID"/>
+        	<many-to-many column="PARTICLE_ID" class="Particle" unique="true"/>
+    	</set>       	
+    	        
+   		<subclass name="SingleConnectorPipe" discriminator-value="SingleConnector">
+			<many-to-one name="forwardConnection1" class="com.noomtech.thebody.buildingblocks.Pipe" column="ForwardConnection1" cascade="all" lazy="false"/>			
+   		</subclass>
+
+   		<subclass name="DoubleConnectorPipe" discriminator-value="DoubleConnector">
+			<many-to-one name="forwardConnection1" class="com.noomtech.thebody.buildingblocks.Pipe" column="ForwardConnection1" cascade="all" lazy="false"/>
+			<many-to-one name="forwardConnection2" class="com.noomtech.thebody.buildingblocks.Pipe" column="ForwardConnection2" cascade="all" lazy="false"/>
+   		</subclass>        
+    </class>
+
+</hibernate-mapping>

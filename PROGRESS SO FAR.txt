@@ -1,0 +1,11 @@
+Everything in here is tested and works i.e. the circulatory system, particles, red blood cells and all their  movements, the processors, the heart and the lungs etc..
+
+This includes testing from a multithreaded integration-test perspective i.e. using loads of particles and multiple particles in each pipe.
+
+The tests are in the test section.
+
+There is no untested or incomplete code in here.
+
+I could probably stand to get rid of the hibernate functionality though as it doesn't really add anything.  Although it just sits there separately and doesn't affect anything.
+
+So whatever you want to do next it is being built on sound foundations.  Enjoy!!
