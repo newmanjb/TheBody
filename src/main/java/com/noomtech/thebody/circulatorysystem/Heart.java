@@ -11,7 +11,7 @@ import com.noomtech.thebody.communication.CommunicatorFactory;
  */
 public class Heart implements Named
 {
-	//¬can have several chambers, each one a pipe and connected to the other one like proper heart, 
+	//can have several chambers, each one a pipe and connected to the other one like proper heart,
 	//but just have one for now with the heart only having one outbound connection
 	private final Atrium atrium1;
 	private volatile boolean stopped = true;
@@ -85,7 +85,7 @@ public class Heart implements Named
 			}
 			catch(InterruptedException e)
 			{
-				//¬heart attack?
+				//@todo - heart attack?
 			}	
 			catch(Exception e)
 			{
