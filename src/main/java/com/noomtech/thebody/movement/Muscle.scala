@@ -60,7 +60,6 @@ class Muscle(pipe : Pipe, size : Percent) extends OxygenReceiver with Named {
     true
   }
 
-  //The
   private class ContractorRunnable(requiredContractionLevel : Percent, countDownLatch: CountDownLatch) extends Runnable {
     override def run(): Unit = {
       contracting.set(true)

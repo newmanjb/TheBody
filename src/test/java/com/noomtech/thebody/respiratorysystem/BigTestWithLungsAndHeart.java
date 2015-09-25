@@ -81,7 +81,6 @@ public class BigTestWithLungsAndHeart {
 
     private class TakeAllOxygenProcessor implements ParticleProcessor {
 
-        @Override
         public Particle processParticle(Particle p) {
             if(p instanceof RedBloodCell) {
 

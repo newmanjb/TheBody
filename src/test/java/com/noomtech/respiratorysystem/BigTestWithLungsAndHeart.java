@@ -8,6 +8,7 @@ import com.noomtech.thebody.circulatorysystem.CirculatorySystemFacade;
 import com.noomtech.thebody.circulatorysystem.Heart;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
+import com.noomtech.thebody.respiratorysystem.Lungs;
 
 /**
  * Created by ga2newh on 09/03/15.

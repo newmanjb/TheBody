@@ -4,6 +4,7 @@ import com.noomtech.thebody.buildingblocks.Particle;
 import com.noomtech.thebody.buildingblocks.ParticleProcessor;
 import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
+import com.noomtech.thebody.respiratorysystem.Lungs;
 
 /**
  * Created by ga2newh on 05/03/15.
@@ -34,7 +35,6 @@ public class BasicLungsTest {
 
     private class TestParticleProcessor implements ParticleProcessor {
 
-        @Override
         public Particle processParticle(Particle p) {
             System.out.println(((RedBloodCell) p).getO2Level());
             return null;
