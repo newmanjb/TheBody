@@ -1,3 +1,14 @@
+-----------------------
+September 25th 2015
+----------------------
+New "movement" package added.
+Muscle + 3 other classes it needs which are OxygenReceiver, CirculatorySystemOxygenTaker and Percentage added.
+Coding is done but they are not checked and tested.
+
+
+-----------------------
+March 12th 2015
+------------------------
 Everything in here is tested and works i.e. the circulatory system, particles, red blood cells and all their  movements, the processors, the heart and the lungs etc..
 
 This includes testing from a multithreaded integration-test perspective i.e. using loads of particles and multiple particles in each pipe.
