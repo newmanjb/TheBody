@@ -1,6 +1,6 @@
 package com.noomtech.thebody.circulatorysystem;
 
-import com.noomtech.respiratorysystem.Lungs;
+import com.noomtech.thebody.respiratorysystem.Lungs;
 import com.noomtech.thebody.buildingblocks.Particle;
 import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
