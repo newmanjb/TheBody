@@ -2,8 +2,10 @@
 September 25th 2015
 ----------------------
 New "movement" package added.
-Muscle + 3 other classes it needs which are OxygenReceiver, CirculatorySystemOxygenTaker and Percentage added.
-Coding is done but they are not checked and tested.
+Muscle + 3 other classes it needs which are CirculatorySystemOxygenTaker, IntegerPercentage and Oxygen added.
+IntegerPercentage, CirculatorySystemOxygenTaker and Oxygen have been tested and documented and are done.
+Muscle is done and documented but hasn't been tested
+Also, Oxygen is only used in the Muscle.  Need to convert the rest of the body to use it instead of ints
 
 
 -----------------------

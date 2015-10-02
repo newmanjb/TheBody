@@ -2,10 +2,12 @@ package com.noomtech.thebody.movement
 
 import java.util.concurrent.atomic.{AtomicBoolean, AtomicInteger}
 import java.util.concurrent.{CountDownLatch, ExecutorService, Executors}
+import scala.math._
 
-import com.noomtech.thebody.buildingblocks.{OxygenReceiver, Named, Pipe}
+import com.noomtech.thebody.IntegerPercentage.IntegerPercent
+import com.noomtech.thebody.{IntegerPercentage, Oxygen}
+import com.noomtech.thebody.buildingblocks.{Named, Pipe}
 import com.noomtech.thebody.circulatorysystem.CirculatorySystemOxygenTaker
-import com.noomtech.thebody.utils.Percentage.Percent
 
 /**
  * Represents a muscle in the body.  It has a supply of oxygen and can be told to contract to any degree, whereupon it
@@ -13,74 +15,91 @@ import com.noomtech.thebody.utils.Percentage.Percent
  * size.
  * @constructor
  * @param pipe The pipe in the circulatory system that this muscle will gets its oxygen supply from
- * @param size A relative value where 100% is the size of the largest muscle in the body.  This is used to determine
- *             properties such as the amount of oxygen the muscle needs to move and its strength
+ * @param relativeSize A relative value where 100% is the size of the largest muscle in the body.  This is used to determine
+ * properties such as the amount of oxygen the muscle needs to move and its strength
  */
-class Muscle(pipe : Pipe, size : Percent) extends OxygenReceiver with Named {
-
-  //Takes the oxygen needed for this muscle from the circulatory system
-  private def oxygenTaker : CirculatorySystemOxygenTaker = new CirculatorySystemOxygenTaker(20,this)
-  pipe.addParticleProcessor(oxygenTaker)
+class Muscle(pipe : Pipe, relativeSize : IntegerPercent, name : String) extends Named {
 
   private val oxygenStored : AtomicInteger = new AtomicInteger(0)
-  private val oxygenPerContraction = 3
   private val oxygenStoreMutex = new Object()
+  private val oxygenUsedPerUnitOfContraction = round(relativeSize * 100).asInstanceOf[Int]
 
-  override def submitOxygen(oxygen : Int) = {oxygenStored.set(oxygen) }
-  override def getName() : String = {"Muscle"}
+  //Receives the oxygen needed for this muscle from the circulatory system
+  def processNewOxygen(oxygen : Oxygen) = {oxygenStoreMutex.synchronized{oxygenStored.set(oxygen.amount)}}
+  //CirculatorySystemOxygenTaker will take the oxygen for the muscle
+  private def oxygenTaker : CirculatorySystemOxygenTaker =
+    new CirculatorySystemOxygenTaker(round(relativeSize * 100).asInstanceOf[Int], processNewOxygen)
+  //Add the CirculatorySystemOxygenTaker to the pipe provided
+  pipe.addParticleProcessor(oxygenTaker)
 
-  val currentContractionLevel : AtomicInteger  = new AtomicInteger(0)
-  val contracting : AtomicBoolean = new AtomicBoolean(false)
+  override def getName() : String = {name}
 
-  private val singleThreadExecutorService : ExecutorService = Executors.newSingleThreadExecutor()
-  
-  private var contractingCountdownLatch : CountDownLatch = null
+  private val currentContractionLevel : AtomicInteger  = new AtomicInteger(0)
+  private val contracting : AtomicBoolean = new AtomicBoolean(false)
+  private val contractingMutex = new Object()
+
+  private var contractorThread : Thread = null
+
+  def contractionLevel : Int = {currentContractionLevel.get()}
+  def isContracting : Boolean = {contracting.get()}
 
   /**
    * Contracts the muscle
-   * @param requiredContractionLevel The level of contraction we want the muscle to move to
-   * @param speed The speed we want it to do it which will be the number of contractions per second
+   * @param requiredContractionLevel The level of contraction we want the muscle to move to (100% = full contracted)
+   * @param speed The speed we want it to do it at which will be the number of contractions per second
+   *              (1 contaction = 1% of total contraction so, for example, 5 would mean contract at 5% per second)
    * @return false if the parameters were invalid or the movement could not occur e.g. if the muscle was contracted to a
    *         level of 40 and a contraction level of 20 was provided or if a contraction level of >100 was provided
    */
-  def startContracting(requiredContractionLevel : Percent, speed : Int): Boolean = {
+  def startContracting(requiredContractionLevel : IntegerPercent, speed : Int): Boolean = {
 
-    if(requiredContractionLevel > 100 || requiredContractionLevel == 0 || requiredContractionLevel <= currentContractionLevel.get()) {
-      false
-    } 
-    
-    if (contractingCountdownLatch != null) {
-      contracting.set(false)
-      contractingCountdownLatch.wait(5000)
-     
+    contractingMutex.synchronized {
+
+      if (requiredContractionLevel == IntegerPercentage(0) || requiredContractionLevel <= currentContractionLevel.get()) {
+        false
+      }
+
+      //Stop the current contraction of there is one and wait for it to finish
+      if (contractorThread != null && contractorThread.isAlive) {
+        contracting.set(false)
+        contractorThread.join()
+      }
+
+      //Start off a new contraction
+      contractorThread = new Thread(new ContractorRunnable(requiredContractionLevel, speed))
+      contractorThread.start()
+      true
     }
-    
-    contractingCountdownLatch = new CountDownLatch(1)
-    singleThreadExecutorService.execute(new ContractorRunnable(requiredContractionLevel, contractingCountdownLatch))
-    true
   }
 
-  private class ContractorRunnable(requiredContractionLevel : Percent, countDownLatch: CountDownLatch) extends Runnable {
+  private class ContractorRunnable(requiredContractionLevel : IntegerPercent, contractionsPerSecond : Int) extends Runnable {
     override def run(): Unit = {
       contracting.set(true)
+      val timeToWait = round(1000 / contractionsPerSecond)
       var canMove = true
-      while(contracting.get() &&
+      //Keep contracting at the required speed as long as:
+      //1: The contraction level is below the desired contraction level
+      //2: There's enough oxygen for our movement
+      //3: We haven't been told to stop yet
+      while(
+        requiredContractionLevel > currentContractionLevel.get() &&
         canMove &&
-        requiredContractionLevel >= currentContractionLevel.get()) {
+        contracting.get()) {
 
         oxygenStoreMutex.synchronized {
           val oxygenAvailable = oxygenStored.get()
-          if(oxygenAvailable >= oxygenPerContraction) {
-            oxygenStored.set((oxygenAvailable - oxygenPerContraction))
-            currentContractionLevel.set(currentContractionLevel.get() - 1)
+          if(oxygenAvailable >= oxygenUsedPerUnitOfContraction) {
+            oxygenStored.set((oxygenAvailable - oxygenUsedPerUnitOfContraction))
+            currentContractionLevel.set(currentContractionLevel.get() + 1)
+            Thread.sleep(timeToWait)
           }
           else {
+            //Not enough oxygen left so the muscle can't move any more
             canMove = false
           }
         }
       }
       contracting.set(false)
-      countDownLatch.countDown()
     }
   }
 }

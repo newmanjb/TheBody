@@ -5,9 +5,9 @@ import com.noomtech.thebody.buildingblocks.Particle;
 import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
 import com.noomtech.thebody.utils.ConcurrentHashSet;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
+//import org.hibernate.Session;
+//import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.Configuration;
 
 
 //----------------------------------------TEST PLAN--------------------------------------------
@@ -32,17 +32,17 @@ import org.hibernate.cfg.Configuration;
  */
 public class CirculatorySystemFacade 
 {
-	private static SessionFactory factory;
-
-	private static Session getSession()
-	{
-		if(factory == null)
-		{
-			factory = new Configuration().configure().buildSessionFactory();
-		}
-
-		return factory.getCurrentSession();
-	}
+//	private static SessionFactory factory;
+//
+//	private static Session getSession()
+//	{
+//		if(factory == null)
+//		{
+//			factory = new Configuration().configure().buildSessionFactory();
+//		}
+//
+//		return factory.getCurrentSession();
+//	}
 	
 //	public static void buildEmptyCirculatorySystemUsingHibernate()
 //	{
