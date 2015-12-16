@@ -10,7 +10,6 @@ import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
 
 /**
- * Created by ga2newh on 09/03/15.
  */
 public class BigTestWithLungsAndHeart {
 

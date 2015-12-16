@@ -10,13 +10,10 @@ import java.util.Set;
 public class SingleConnectorPipe extends Pipe implements SingleOutboundConnector
 {
     private Pipe forwardConnection;
-	
+
 	//For hibernate
-	protected SingleConnectorPipe()
-	{
-		super();
-	}
-	
+	protected SingleConnectorPipe() {}
+
 	public SingleConnectorPipe(String name, Set<Particle> particles)
 	{
 		super(name, particles);

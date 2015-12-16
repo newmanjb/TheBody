@@ -4,7 +4,6 @@ import com.noomtech.thebody.circulatorysystem.CirculatorySystemFacade;
 import com.noomtech.thebody.circulatorysystem.Heart;
 
 /**
- * Created by ga2newh on 06/03/15.
  */
 public class CirculatorySystemMovementTest {
 

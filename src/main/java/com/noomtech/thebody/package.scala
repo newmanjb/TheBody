@@ -53,53 +53,65 @@ package object thebody {
       private val hashCodeVal = percentVal.hashCode + PERCENTAGE_CHAR_HASHCODE
 
       override def toString(): String = {
-        percentValue + PERCENTAGE_CHAR
+        intVal + PERCENTAGE_CHAR
       }
 
-      private def percentValue(): Int = percentVal
+      def intVal(): Int = percentVal
 
       def +(other: IntegerPercent): IntegerPercent = {
-        new IntegerPercent(percentValue + other.percentValue)
+        new IntegerPercent(intVal + other.intVal)
       }
 
       def -(other: IntegerPercent): IntegerPercent = {
-        new IntegerPercent(percentValue - other.percentValue)
+        new IntegerPercent(intVal - other.intVal)
       }
 
       def *(other: Double): Double = {
         other * multiplier
       }
 
+      def >(other: Int): Boolean = {
+        intVal > other
+      }
+
+      def <(other:Int) : Boolean = {
+        intVal < other
+      }
+
       def >(other: Long): Boolean = {
-        percentValue > other
+        intVal > other
       }
 
       def <(other: Long): Boolean = {
-        percentValue < other
+        intVal < other
       }
 
       def >(other: IntegerPercent): Boolean = {
-        percentValue > other.percentValue
+        intVal > other.intVal
       }
 
       def <(other: IntegerPercent): Boolean = {
-        percentValue < other.percentValue
+        intVal < other.intVal
       }
 
       def <=(other: Long): Boolean = {
-        percentValue <= other
+        intVal <= other
       }
 
       def <=(other: IntegerPercent): Boolean = {
-        percentValue <= other.percentValue
+        intVal <= other.intVal
       }
 
       def >=(other: Long): Boolean = {
-        percentValue >= other
+        intVal >= other
       }
 
       def >=(other: IntegerPercent): Boolean = {
-        percentValue >= other.percentValue
+        intVal >= other.intVal
+      }
+
+      def ==(other: Int): Boolean = {
+        intVal == other
       }
 
       override def hashCode: Int = {
@@ -113,5 +125,11 @@ package object thebody {
         }
       }
     }
+  }
+
+  //%%Expand by adding a NerveImpulseGenerator and then have the method link the two
+  type NerveImpulseReceiver = () => {}
+  def linkByNerve(nerveImpulseReceiver: NerveImpulseReceiver) = {
+
   }
 }

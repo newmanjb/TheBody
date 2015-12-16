@@ -1,3 +1,15 @@
+
+-----------------------
+December 11th 2015
+----------------------
+Muscle, first version, is complete
+Tests have been written and all run correctly for muscle.
+Still to do from Sept -- need to use Oxygen in rest of body, as it's only used in Muscle
+Muscle can now be enhanced so as it can be added in "groups" or "pairs" i.e. when one in the pair contracts it "relaxes"
+the other one and vica versa e.g. like biceps and triceps, and in order to stop a muscle from contracting the counteracting
+muscle must contract enough to counteract it.
+
+
 -----------------------
 September 25th 2015
 ----------------------

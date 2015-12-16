@@ -6,7 +6,6 @@ import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
 
 /**
- * Created by ga2newh on 05/03/15.
  */
 public class BasicLungsTest {
 

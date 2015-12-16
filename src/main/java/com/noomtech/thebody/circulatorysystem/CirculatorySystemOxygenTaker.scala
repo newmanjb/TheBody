@@ -3,10 +3,11 @@ package com.noomtech.thebody.circulatorysystem
 import com.noomtech.thebody.Oxygen
 import com.noomtech.thebody.buildingblocks.{Particle, ParticleProcessor}
 import com.noomtech.thebody.cells.RedBloodCell
+import com.noomtech.thebody.movement.muscle.Muscle
 
 
 /**
- * Can be added to the circulatory system by something that uses [[com.noomtech.thebody.Oxygen]] like an organ e.g. a [[com.noomtech.thebody.movement.Muscle]],
+ * Can be added to the circulatory system by something that uses [[com.noomtech.thebody.Oxygen]] like an organ e.g. a [[Muscle]],
  * in order to deliver a supply of oxygen to it
  * @constructor
  * @param maxOxygenToTake The maximum amount of oxygen to take from any [[com.noomtech.thebody.cells.RedBloodCell]] at any one time.  If less than this amount is
