@@ -1,13 +1,14 @@
-package com.noomtech.thebody.respiratorysystem;
+package com.noomtech.thebody.respiration.thoracic;
 
-import com.noomtech.thebody.buildingblocks.Particle;
-import com.noomtech.thebody.buildingblocks.ParticleProcessor;
-import com.noomtech.thebody.buildingblocks.Pipe;
+import com.noomtech.thebody.buildingblocks.transport.Particle;
+import com.noomtech.thebody.buildingblocks.transport.ParticleProcessor;
+import com.noomtech.thebody.buildingblocks.transport.Pipe;
 import com.noomtech.thebody.cells.RedBloodCell;
 import com.noomtech.thebody.circulatorysystem.CirculatorySystemFacade;
 import com.noomtech.thebody.circulatorysystem.Heart;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
+import com.noomtech.thebody.respiration.Lungs;
 
 /**
  */
@@ -33,7 +34,7 @@ public class BigTestWithLungsAndHeart {
         singleConnectorPipe.addParticleProcessor(new TakeAllOxygenProcessor());
 
         lungs.startBreathing();
-        heart.start();
+        new HeartThread(heart,300).start();
     }
 
     private void doHeartHeartAndLungsWithThreeParticlesInHeart() {
@@ -47,7 +48,7 @@ public class BigTestWithLungsAndHeart {
         singleConnectorPipe.addParticleProcessor(new TakeAllOxygenProcessor());
 
         lungs.startBreathing();
-        heart.start();
+        new HeartThread(heart,300).start();
     }
 
     private void doHeartHeartAndLungsWithThreeParticlesInAdjacentPipes() {
@@ -61,7 +62,7 @@ public class BigTestWithLungsAndHeart {
         singleConnectorPipe.addParticleProcessor(new TakeAllOxygenProcessor());
 
         lungs.startBreathing();
-        heart.start();
+        new HeartThread(heart,300).start();
     }
 
     private void doHeartHeartAndLungsWithThreeParticlesInEverything() {
@@ -75,7 +76,7 @@ public class BigTestWithLungsAndHeart {
         singleConnectorPipe.addParticleProcessor(new TakeAllOxygenProcessor());
 
         lungs.startBreathing();
-        heart.start();
+        new HeartThread(heart,300).start();
     }
 
     private class TakeAllOxygenProcessor implements ParticleProcessor {
@@ -103,6 +104,28 @@ public class BigTestWithLungsAndHeart {
             }
 
             return p;
+        }
+    }
+
+    private class HeartThread extends Thread {
+        private Heart heart;
+        private long interval;
+        private HeartThread(Heart heart, long interval) {
+            this.heart = heart;
+            this.interval = interval;
+        }
+        public void run() {
+            while(true) {
+                heart.onNerveImpulse();
+                try {
+                    Thread.sleep(interval);
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                    System.exit(1);
+                }
+
+            }
         }
     }
 }

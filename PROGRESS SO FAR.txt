@@ -1,3 +1,15 @@
+-----------------------
+December 21st 2015
+----------------------
+Muscle pairs (as outlined in 11th Dec below) have been added and tested
+Nerves + functionality to link components up via nerves has been added and tested
+Muscles can be connected to brain or another impulse generator via nerves and their movements controlled
+by nerve impulses (tested)
+Heart can be connected to brain or another impulse generator via nerves and the beating controlled by nerve
+impulses (tested)
+TODO -
+- Lungs need to be modified to be run by nerve impulses in the same way as the heart has been
+- need to use Oxygen in rest of body, as it's only used in Muscle
 
 -----------------------
 December 11th 2015

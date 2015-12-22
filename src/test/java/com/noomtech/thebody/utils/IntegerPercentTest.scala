@@ -109,7 +109,10 @@ class IntegerPercentTest extends FlatSpec with MustMatchers {
   }
 
   "The == operation" must "work for Percent and a number" in {
-    IntegerPercentage(20) == 20 must equal (true)
-    IntegerPercentage(20) == 21 must equal (false)
+    var twenty : Int  = 20
+    var twentyOne : Int  = 21
+
+    IntegerPercentage(20) == twenty must equal (true)
+    IntegerPercentage(20) == twentyOne must equal (false)
   }
 }

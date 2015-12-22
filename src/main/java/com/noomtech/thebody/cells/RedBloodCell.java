@@ -1,6 +1,6 @@
 package com.noomtech.thebody.cells;
 
-import com.noomtech.thebody.buildingblocks.Particle;
+import com.noomtech.thebody.buildingblocks.transport.Particle;
 
 
 /**

@@ -105,7 +105,6 @@ package object thebody {
       def >=(other: Long): Boolean = {
         intVal >= other
       }
-
       def >=(other: IntegerPercent): Boolean = {
         intVal >= other.intVal
       }
@@ -125,11 +124,5 @@ package object thebody {
         }
       }
     }
-  }
-
-  //%%Expand by adding a NerveImpulseGenerator and then have the method link the two
-  type NerveImpulseReceiver = () => {}
-  def linkByNerve(nerveImpulseReceiver: NerveImpulseReceiver) = {
-
   }
 }

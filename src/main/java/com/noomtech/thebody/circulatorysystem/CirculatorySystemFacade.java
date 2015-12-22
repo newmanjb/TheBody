@@ -1,9 +1,9 @@
 package com.noomtech.thebody.circulatorysystem;
 
-import com.noomtech.thebody.respiratorysystem.Lungs;
-import com.noomtech.thebody.buildingblocks.Particle;
-import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
+import com.noomtech.thebody.buildingblocks.transport.Particle;
+import com.noomtech.thebody.buildingblocks.transport.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
+import com.noomtech.thebody.respiration.Lungs;
 import com.noomtech.thebody.utils.ConcurrentHashSet;
 //import org.hibernate.Session;
 //import org.hibernate.SessionFactory;
@@ -24,13 +24,13 @@ import com.noomtech.thebody.utils.ConcurrentHashSet;
 //11/ 2 particles in 6 adjacents cells.  Heartbeats of force 3. DONE
 //---------------------------------------------------------------------------------------------
 /**
- * Conveniently wraps handy operations associated with the circulatory system in one class with easy to use methods (as the 
+ * Conveniently wraps handy operations associated with the circulatory system in one class with easy to use methods (as the
  * Facade pattern dictates).
  * This used to use hibernate a lot to load the configurations of cells and organs but have decided against that
  * now as it's overkill.
  * @author Nooom, Noomtech ltd
  */
-public class CirculatorySystemFacade 
+public class CirculatorySystemFacade
 {
 //	private static SessionFactory factory;
 //
@@ -43,7 +43,7 @@ public class CirculatorySystemFacade
 //
 //		return factory.getCurrentSession();
 //	}
-	
+
 //	public static void buildEmptyCirculatorySystemUsingHibernate()
 //	{
 //		Particle p1Heart = new Particle("HeartParticle11");
@@ -121,9 +121,9 @@ public class CirculatorySystemFacade
 //
 //		return heart;
 //	}
-	
-//	
-//	
+
+//
+//
 	//�pass in some config context objects
 	//�Use Spring here?
 	public static Heart buildXParticlesInEachCellTestCirculatorySystemJustHeart(
@@ -152,7 +152,7 @@ public class CirculatorySystemFacade
 		ConcurrentHashSet<Particle> heartParticles = buildParticleSet(numParticlesInHeart, "From heart ");
         Atrium atrium = new Atrium("Atrium", heartParticles);
         atrium.setForwardConnection1(outOfHeart[0]);
-		Heart heart = new Heart(atrium, 1500, heartBeatForce);
+		Heart heart = new Heart(atrium, heartBeatForce);
 		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
 
@@ -178,7 +178,7 @@ public class CirculatorySystemFacade
         Atrium atrium = new Atrium("Atrium", heartParticles);
         atrium.setForwardConnection1(outOfHeart[0]);
         Lungs lungs = new Lungs(outOfHeart[outOfHeart.length - 1], toHeart[0], 1000);
-        Heart heart = new Heart(atrium, 300, heartBeatForce);
+        Heart heart = new Heart(atrium, heartBeatForce);
         toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
 
         return new Object[]{heart,lungs};
@@ -202,7 +202,7 @@ public class CirculatorySystemFacade
         Atrium atrium = new Atrium("Atrium", heartParticles);
         atrium.setForwardConnection1(outOfHeart[0]);
         Lungs lungs = new Lungs(outOfHeart[outOfHeart.length - 1], toHeart[0], 1000);
-        Heart heart = new Heart(atrium, 300, heartBeatForce);
+        Heart heart = new Heart(atrium, heartBeatForce);
         toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
 
         return new Object[]{heart,lungs};
@@ -227,9 +227,9 @@ public class CirculatorySystemFacade
         }
         return particles;
     }
-//	
+//
 //	public static Heart buildCirculatorySystemWith100ParticlesInEachCell()
-//	{				
+//	{
 //		ConcurrentHashSet<Particle> p1 = buildParticleSet("Particle",1,100);
 //		ConcurrentHashSet<Particle> p2 = buildParticleSet("Particle",2,100);
 //		ConcurrentHashSet<Particle> p3 = buildParticleSet("Particle",3,100);
@@ -245,67 +245,67 @@ public class CirculatorySystemFacade
 //		ConcurrentHashSet<Particle> p13 = buildParticleSet("Particle",13,100);
 //		ConcurrentHashSet<Particle> p14 = buildParticleSet("Particle",14,100);
 //		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,100);
-//		
+//
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{p1,p2,p3,p4,p5,p6,p7});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, new ConcurrentHashSet[]{p8,p9,p10,p11,p12,p13,p14});
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(buildParticleSet("From heart", 1, 1), 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
-//	}	
-//	
+//	}
+//
 //	public static Heart buildCirculatorySystemWithOneParticleInHeartOnly()
-//	{				
+//	{
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{buildParticleSet("Particle",1,1)});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(buildParticleSet("From heart", 1, 1), 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
 //	}
-//	
+//
 //	public static Heart buildCirculatorySystemWithTenParticlesInHeartOnly()
-//	{				
+//	{
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(buildParticleSet("From heart", 1, 10), 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
-//	}	
+//	}
 //
 //	public static Heart buildCirculatorySystemWith200ParticlesInHeartOnly()
-//	{				
+//	{
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(buildParticleSet("From heart", 1, 200), 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
-//	}	
-//	
+//	}
+//
 //	public static Heart buildCirculatorySystemWithThreeParticlesInSixAdajacentCells()
-//	{		
+//	{
 //		ConcurrentHashSet<Particle> p1 = buildParticleSet("Particle",1,3);
 //		ConcurrentHashSet<Particle> p2 = buildParticleSet("Particle",2,3);
 //		ConcurrentHashSet<Particle> p3 = buildParticleSet("Particle",3,3);
@@ -313,22 +313,22 @@ public class CirculatorySystemFacade
 //		ConcurrentHashSet<Particle> p5 = buildParticleSet("Particle",5,3);
 //		ConcurrentHashSet<Particle> p6 = buildParticleSet("Particle",6,3);
 //		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,3);
-//				
+//
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{p1,p2,p3,p4,p5,p6});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(heartParticles, 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
 //	}
-//	
+//
 //	public static Heart buildCirculatorySystemWithTwoParticlesInSixAdajacentCellsWithHeartbeatForce2()
-//	{		
+//	{
 //		ConcurrentHashSet<Particle> p1 = buildParticleSet("Particle",1,2);
 //		ConcurrentHashSet<Particle> p2 = buildParticleSet("Particle",2,2);
 //		ConcurrentHashSet<Particle> p3 = buildParticleSet("Particle",3,2);
@@ -336,95 +336,95 @@ public class CirculatorySystemFacade
 //		ConcurrentHashSet<Particle> p5 = buildParticleSet("Particle",5,2);
 //		ConcurrentHashSet<Particle> p6 = buildParticleSet("Particle",6,2);
 //		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,2);
-//				
+//
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{p1,p2,p3,p4,p5,p6});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(heartParticles, 250);
 //		heart.setHeartBeatForce(2);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
-//	}		
-//	
+//	}
+//
 //	public static Heart buildCirculatorySystemWithTwoParticlesInThreeAdajacentCellsWithHeartbeatForce3()
-//	{		
+//	{
 //		ConcurrentHashSet<Particle> p1 = buildParticleSet("Particle",1,2);
 //		ConcurrentHashSet<Particle> p2 = buildParticleSet("Particle",2,2);
 //		ConcurrentHashSet<Particle> p3 = buildParticleSet("Particle",3,2);
 //		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,2);
-//				
+//
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{p1,p2,p3});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(heartParticles, 250);
 //		heart.setHeartBeatForce(3);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
-//		return heart;
-//	}			
-//	
-//	public static Heart buildCirculatorySystemWithOneParticleInAtrium()
-//	{		
-//		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,1);
-//				
-//		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
-//		joinUp(outOfHeart);
-//		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
-//		joinUp(toHeart);
-//	
-//		Heart heart = new Heart(heartParticles, 250);
-//		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
-//		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
-//		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
-//		return heart;
-//	}	
 //
-//	public static Heart buildCirculatorySystemWithTwoParticlesInAtrium()
-//	{		
-//		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,2);
-//				
-//		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
-//		joinUp(outOfHeart);
-//		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
-//		joinUp(toHeart);
-//	
-//		Heart heart = new Heart(heartParticles, 250);
-//		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
-//		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
-//		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
 //		return heart;
 //	}
-//	
+//
+//	public static Heart buildCirculatorySystemWithOneParticleInAtrium()
+//	{
+//		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,1);
+//
+//		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
+//		joinUp(outOfHeart);
+//		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
+//		joinUp(toHeart);
+//
+//		Heart heart = new Heart(heartParticles, 250);
+//		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
+//		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
+//		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
+//
+//		return heart;
+//	}
+//
+//	public static Heart buildCirculatorySystemWithTwoParticlesInAtrium()
+//	{
+//		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,2);
+//
+//		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, null);
+//		joinUp(outOfHeart);
+//		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, null);
+//		joinUp(toHeart);
+//
+//		Heart heart = new Heart(heartParticles, 250);
+//		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
+//		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
+//		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
+//
+//		return heart;
+//	}
+//
 //	public static Heart buildCirculatorySystemWithTwoParticlesInAtriumTwoInCellInFrontAndTwoInCellBehind()
 //	{
 //		ConcurrentHashSet<Particle> heartParticles = buildParticleSet("Particle from heart",1,2);
 //		ConcurrentHashSet<Particle> p1 = buildParticleSet("Particle",1,2);
 //		ConcurrentHashSet<Particle> p2 = buildParticleSet("Particle",2,2);
-//				
+//
 //		SingleConnectorPipe[] outOfHeart = buildPipeArray(1,7, new ConcurrentHashSet[]{p1});
 //		joinUp(outOfHeart);
 //		SingleConnectorPipe[] toHeart = buildPipeArray(8,7, new ConcurrentHashSet[]{null, null, null, null, null, null, p2});
 //		joinUp(toHeart);
-//	
+//
 //		Heart heart = new Heart(heartParticles, 250);
 //		heart.getAtrium1().setForwardConnection1(outOfHeart[0]);
 //		outOfHeart[outOfHeart.length - 1].setForwardConnection1(toHeart[0]);
 //		toHeart[toHeart.length - 1].setForwardConnection1(heart.getAtrium1());
-//		
+//
 //		return heart;
-//	}	
-//	
+//	}
+//
 //	private static ConcurrentHashSet<Particle> buildParticleSet(String prepend, int marker, int noOfParticles)
 //	{
 //		ConcurrentHashSet<Particle> particleSet = new ConcurrentHashSet<Particle>();
@@ -432,10 +432,10 @@ public class CirculatorySystemFacade
 //		{
 //			particleSet.add(new Particle(prepend + " " + marker + "." + i));
 //		}
-//		
+//
 //		return particleSet;
 //	}
-//	
+//
 	private static void joinUp(SingleConnectorPipe[] pipes)
 	{
 		int boundary = pipes.length - 1;

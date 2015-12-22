@@ -1,4 +1,4 @@
-package com.noomtech.thebody.buildingblocks;
+package com.noomtech.thebody.buildingblocks.transport;
 
 import java.util.Iterator;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.noomtech.thebody.buildingblocks.Named;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
 import com.noomtech.thebody.utils.ConcurrentHashSet;

@@ -1,9 +1,10 @@
-package com.noomtech.thebody.respiratorysystem;
+package com.noomtech.thebody.respiration.thoracic;
 
-import com.noomtech.thebody.buildingblocks.Particle;
-import com.noomtech.thebody.buildingblocks.ParticleProcessor;
-import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
+import com.noomtech.thebody.buildingblocks.transport.Particle;
+import com.noomtech.thebody.buildingblocks.transport.ParticleProcessor;
+import com.noomtech.thebody.buildingblocks.transport.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
+import com.noomtech.thebody.respiration.Lungs;
 
 /**
  */

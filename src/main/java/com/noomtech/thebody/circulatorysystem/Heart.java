@@ -1,42 +1,36 @@
 package com.noomtech.thebody.circulatorysystem;
 
 import com.noomtech.thebody.buildingblocks.Named;
-import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
+import com.noomtech.thebody.buildingblocks.nerve.NerveImpulseReceiverForJava;
+import com.noomtech.thebody.buildingblocks.nerve.NerveImpulseReceiverJavaAdapter;
+import com.noomtech.thebody.buildingblocks.transport.SingleConnectorPipe;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Represents the heart (obviously).
  * @author Nooom, Noomtech Ltd
  */
-public class Heart implements Named
+public class Heart implements Named, NerveImpulseReceiverForJava
 {
-	//can have several chambers, each one a pipe and connected to the other one like proper heart,
+	//@todo -- could have several chambers, each one a pipe and connected to the other one like proper heart,
 	//but just have one for now with the heart only having one outbound connection
 	private final Atrium atrium1;
-	private volatile boolean stopped = true;
-	private int heartBeatInterval;
-	//Use to build shockwaves for the heart-beats
-	private volatile int heartBeatForce = 1;
-	//The thread that is responsible for heart-beats
-	private final Thread lifeThread;
 	private static final Communicator COMMUNICATOR = CommunicatorFactory.getCommunicator();
 	private static final String NAME = "Heart";
-	
-	
-	public Heart(Atrium atrium, int heartBeatInterval, int heartBeatForce)
+	private NerveImpulseReceiverJavaAdapter nerveImpulseReceiverJavaAdapter = new NerveImpulseReceiverJavaAdapter(this);
+	private static final ExecutorService HEARTBEAT_SERVICE = Executors.newFixedThreadPool(1);
+
+	public static String HEART_BEAT_EVENT = "Heart.Beat";
+
+
+	public Heart(Atrium atrium, int heartBeatForce)
 	{
-		this.heartBeatInterval = heartBeatInterval;
 		atrium1 = atrium;
 		atrium1.setBeatForce(heartBeatForce);
-		lifeThread = new Thread(new HeartBeatRunnable());
-		lifeThread.setName(atrium1.getName() + " - heartbeater");
-	}
-	
-	
-	public void setHeartBeatForce(int hearBeatForce)
-	{
-		this.heartBeatForce = hearBeatForce;
 	}
 	
 	public SingleConnectorPipe getAtrium1()
@@ -48,54 +42,16 @@ public class Heart implements Named
 	{
 		return NAME;
 	}
-	
-	public void stop()
-	{
-		if(stopped)
-		{
-			throw new IllegalArgumentException("Heart is already stopped");
-		}
 
-		lifeThread.interrupt();
-	}
-	
-	public void start()
-	{
-		if(!stopped)
-		{
-			throw new IllegalArgumentException("Heart is already started");			
-		}
 
-		lifeThread.start();
-		COMMUNICATOR.postEvent(this, "Heart started", "Heart.Started");
+	public NerveImpulseReceiverJavaAdapter getNerveImpulseReceiverJavaAdapter() {
+		return nerveImpulseReceiverJavaAdapter;
 	}
-	
-	private class HeartBeatRunnable implements Runnable
-	{
-		public void run()
-		{
-			try
-			{
-				stopped = false;
-				while(!stopped)
-				{
-					atrium1.beat();
-					Thread.sleep(heartBeatInterval);					
-				}
-			}
-			catch(InterruptedException e)
-			{
-				//@todo - heart attack?
-			}	
-			catch(Exception e)
-			{
-				COMMUNICATOR.postExceptionEvent(e.getMessage(), e);				
-			}
-			finally
-			{
-				COMMUNICATOR.postEvent(this, "Heart stopped", "Heart.Stopped");
-				stopped = true;
-			}
-		}
-	}	
+
+	public void onNerveImpulse() {
+		HEARTBEAT_SERVICE.execute(new Runnable() {public void run() {
+			COMMUNICATOR.postEvent(this, "Heartbeat", HEART_BEAT_EVENT);
+			atrium1.beat();
+		}});
+	}
 }

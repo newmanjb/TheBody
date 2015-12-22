@@ -1,12 +1,12 @@
-package com.noomtech.thebody.respiratorysystem;
+package com.noomtech.thebody.respiration;
 
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.noomtech.thebody.buildingblocks.Named;
-import com.noomtech.thebody.buildingblocks.Particle;
-import com.noomtech.thebody.buildingblocks.ParticleProcessor;
-import com.noomtech.thebody.buildingblocks.SingleConnectorPipe;
+import com.noomtech.thebody.buildingblocks.transport.Particle;
+import com.noomtech.thebody.buildingblocks.transport.ParticleProcessor;
+import com.noomtech.thebody.buildingblocks.transport.SingleConnectorPipe;
 import com.noomtech.thebody.cells.RedBloodCell;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;

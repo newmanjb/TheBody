@@ -1,4 +1,4 @@
-package com.noomtech.thebody.buildingblocks;
+package com.noomtech.thebody.buildingblocks.transport;
 
 /**
  * Represents a shockwave e.g. a heartbeat, that starts in one location (the source) e.g. the heart, and which can be passed on 

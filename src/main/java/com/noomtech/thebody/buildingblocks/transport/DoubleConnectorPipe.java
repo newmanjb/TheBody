@@ -1,4 +1,4 @@
-package com.noomtech.thebody.buildingblocks;
+package com.noomtech.thebody.buildingblocks.transport;
 
 import java.util.Set;
 
@@ -47,20 +47,17 @@ public class DoubleConnectorPipe extends Pipe implements DoubleOutboundConnector
 		return true;
 	}
 	
-	void passOnShockWaveToConnections(int forceForNextPipe, Object source)
-	{
+	void passOnShockWaveToConnections(int forceForNextPipe, Object source) {
 		//Prevent infinite loops
-		if(leftConnection != source)
-		{
+		if (leftConnection != source) {
 			leftConnection.shockWaveEvent(new ShockWaveEvent(source, forceForNextPipe));
 		}
 		//Prevent infinite loops
-		if(rightConnection != source)
-		{
+		if (rightConnection != source) {
 			rightConnection.shockWaveEvent(new ShockWaveEvent(source, forceForNextPipe));
 		}
-	}	
-	
+	}
+
 	public void setForwardConnection1(Pipe leftConnection)
 	{
 		this.leftConnection = leftConnection;

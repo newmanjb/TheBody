@@ -1,8 +1,9 @@
-package com.noomtech.thebody.buildingblocks;
+package com.noomtech.thebody.buildingblocks.transport;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.noomtech.thebody.buildingblocks.Named;
 import com.noomtech.thebody.communication.Communicator;
 import com.noomtech.thebody.communication.CommunicatorFactory;
 
@@ -10,7 +11,7 @@ import com.noomtech.thebody.communication.CommunicatorFactory;
  * Superclass for a particle.
  * @author Nooom, Noomtech Ltd
  */
-public class Particle implements Named 
+public class Particle implements Named
 {
 
 	//The container that this particle is currently in

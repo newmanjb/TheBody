@@ -3,10 +3,10 @@ package com.noomtech.thebody.circulatorysystem
 import java.util.concurrent.atomic.AtomicInteger
 
 import com.noomtech.thebody.Oxygen
-import com.noomtech.thebody.buildingblocks.{Particle, ParticleProcessor, Pipe}
+import com.noomtech.thebody.buildingblocks.transport.{Particle, ParticleProcessor, Pipe}
 import com.noomtech.thebody.cells.RedBloodCell
 import org.scalatest.FlatSpec
-import org.scalatest.matchers.{MustMatchers}
+import org.scalatest.matchers.MustMatchers
 
 
 class CirculatorySystemOxygenTakerTest extends FlatSpec with MustMatchers {

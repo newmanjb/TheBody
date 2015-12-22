@@ -1,4 +1,4 @@
-package com.noomtech.thebody.buildingblocks;
+package com.noomtech.thebody.buildingblocks.transport;
 
 import java.util.Set;
 

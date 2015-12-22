@@ -8,7 +8,9 @@ public interface Communicator
 {
 
 	
-	public void postEvent(Object notifier, String message, String category);
+	void postEvent(Object notifier, String message, String category);
 	
-	public void postExceptionEvent(String message, Exception e);
+	void postExceptionEvent(String message, Exception e);
+
+	void addEventListener(CommunicatorEventListener listener, String subject);
 }
