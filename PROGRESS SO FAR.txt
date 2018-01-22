@@ -35,14 +35,17 @@ Also, Oxygen is only used in the Muscle.  Need to convert the rest of the body t
 -----------------------
 March 12th 2015
 ------------------------
-Everything in here is tested and works i.e. the circulatory system, particles, red blood cells and all their  movements, the processors, the heart and the lungs etc..
-
+Everything in here is tested and works i.e. the circulatory system, particles, red blood cells and all their  movements, the processors,
+the heart and the lungs etc..
 This includes testing from a multithreaded integration-test perspective i.e. using loads of particles and multiple particles in each pipe.
-
 The tests are in the test section.
-
 There is no untested or incomplete code in here.
-
 I could probably stand to get rid of the hibernate functionality though as it doesn't really add anything.  Although it just sits there separately and doesn't affect anything.
-
 So whatever you want to do next it is being built on sound foundations.  Enjoy!!
+
+------------------------
+January 22nd 2018
+------------------------
+Added a new "gastrointestine" package with the intention of building a gastrointestinal section next.
+This contains implementations for materials that are external to the body e.g. food.  These classes are checked and
+read-through but not tested yet.
