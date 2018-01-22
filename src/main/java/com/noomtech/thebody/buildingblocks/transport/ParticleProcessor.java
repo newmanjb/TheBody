@@ -13,5 +13,5 @@ public interface ParticleProcessor
 	 * particle itself being held up and not anything else.
 	 * @return The particle, modified or not, or null if this processor needs to take the particle 
 	 */
-	public Particle processParticle(Particle p);
+	Particle processParticle(Particle p);
 }

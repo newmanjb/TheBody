@@ -5,5 +5,5 @@ package com.noomtech.thebody.buildingblocks.transport;
  */
 public interface ParticleReceiver extends ShockWaveEventListener
 {
-	public boolean submit(Particle p);
+	boolean submit(Particle p);
 }
